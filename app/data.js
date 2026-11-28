@@ -1,24 +1,37 @@
-// AngkaNusa data: real Indonesia figures, each with its source and year.
-// Sources: BPS (Statistics Indonesia), Bank Indonesia, World Bank, APJII.
-// Figures are the published headline values; series are the official annual
-// releases. Nothing here is invented: where a value is an estimate the note
-// says so.
+// AngkaNusa core data: the headline figures and annual series behind the
+// overview, economy and labour pages. Real Indonesia figures, each with its
+// source and period. Sources: BPS (Statistics Indonesia), Bank Indonesia,
+// World Bank. Figures are the published headline values; where a value is
+// an estimate the note says so. Province and people data live in
+// data-provinces.js and data-people.js, loaded only by the pages that
+// need them.
 
 export const meta = {
   country: 'Indonesia',
-  updated: '26 November 2026',
+  updated: '28 November 2026',
   currency: 'rupiah (Rp)',
 };
 
+// Headline indicators. `spark` is the recent annual series behind the card's
+// sparkline (same publisher as the headline figure); `delta` says where the
+// figure stood one period earlier.
 export const kpis = [
-  { id: 'population', label: 'Population', value: '281.6m', note: 'mid-year estimate, 2024', source: 'BPS' },
-  { id: 'gdp', label: 'GDP', value: 'Rp22,139tn', note: 'current prices, 2024 · ≈ US$1.40tn', source: 'BPS' },
-  { id: 'growth', label: 'Economic growth', value: '5.03%', note: 'real GDP growth, 2024', source: 'BPS' },
-  { id: 'gdpCapita', label: 'GDP per capita', value: 'US$4,925', note: 'current US$, 2024', source: 'World Bank' },
-  { id: 'inflation', label: 'Inflation', value: '1.57%', note: 'year-on-year CPI, Dec 2024', source: 'BPS' },
-  { id: 'unemployment', label: 'Unemployment', value: '4.91%', note: 'open unemployment, Aug 2024', source: 'BPS' },
-  { id: 'poverty', label: 'Poverty rate', value: '8.57%', note: 'share of population, Sep 2024', source: 'BPS' },
-  { id: 'hdi', label: 'Human Development Index', value: '75.02', note: 'high human development, 2024', source: 'BPS' },
+  { id: 'population', label: 'Population', value: '284.4m', note: 'mid-year estimate, 2025', source: 'BPS',
+    spark: [255.5, 258.7, 261.9, 265.0, 268.1, 270.2, 272.7, 275.8, 278.7, 281.6, 284.4], delta: 'from 281.6m in 2024' },
+  { id: 'gdp', label: 'GDP', value: 'Rp23,821tn', note: 'current prices, 2025', source: 'BPS',
+    spark: [11526, 12402, 13589, 14838, 15833, 15443, 16977, 19588, 20892, 22139, 23821], delta: 'from Rp22,139tn in 2024' },
+  { id: 'growth', label: 'Economic growth', value: '5.11%', note: 'real GDP growth, 2025', source: 'BPS',
+    spark: [4.88, 5.03, 5.07, 5.17, 5.02, -2.07, 3.70, 5.31, 5.05, 5.03, 5.11], delta: 'from 5.03% in 2024' },
+  { id: 'gdpCapita', label: 'GDP per capita', value: 'Rp83.7m', note: 'per head, 2025', source: 'BPS',
+    spark: [59.1, 57.2, 62.3, 71.0, 75.0, 78.6, 83.7], delta: 'from Rp78.6m in 2024' },
+  { id: 'inflation', label: 'Inflation', value: '2.92%', note: 'year-on-year CPI, Dec 2025', source: 'BPS',
+    spark: [2.72, 1.68, 1.87, 5.51, 2.61, 1.57, 2.92], delta: 'from 1.57% in Dec 2024' },
+  { id: 'unemployment', label: 'Unemployment', value: '4.85%', note: 'open rate, Aug 2025', source: 'BPS',
+    spark: [5.28, 7.07, 6.49, 5.86, 5.32, 4.91, 4.85], delta: 'from 4.91% in Aug 2024' },
+  { id: 'poverty', label: 'Poverty rate', value: '8.47%', note: 'share of people, Mar 2025', source: 'BPS',
+    spark: [9.22, 10.19, 9.71, 9.57, 9.36, 8.57, 8.47], delta: 'from 8.57% in Sep 2024' },
+  { id: 'hdi', label: 'Human Development Index', value: '75.90', note: 'high development, 2025', source: 'BPS',
+    spark: [71.92, 71.94, 72.29, 72.91, 74.39, 75.02, 75.90], delta: 'from 75.02 in 2024' },
 ];
 
 // Annual series: year + value. All BPS unless noted.
@@ -27,19 +40,22 @@ export const series = {
     { year: 2015, v: 4.88 }, { year: 2016, v: 5.03 }, { year: 2017, v: 5.07 },
     { year: 2018, v: 5.17 }, { year: 2019, v: 5.02 }, { year: 2020, v: -2.07 },
     { year: 2021, v: 3.70 }, { year: 2022, v: 5.31 }, { year: 2023, v: 5.05 },
-    { year: 2024, v: 5.03 },
+    { year: 2024, v: 5.03 }, { year: 2025, v: 5.11 },
   ],
   inflation: [
     { year: 2019, v: 2.72 }, { year: 2020, v: 1.68 }, { year: 2021, v: 1.87 },
     { year: 2022, v: 5.51 }, { year: 2023, v: 2.61 }, { year: 2024, v: 1.57 },
+    { year: 2025, v: 2.92 },
   ],
   unemployment: [
     { year: 2019, v: 5.28 }, { year: 2020, v: 7.07 }, { year: 2021, v: 6.49 },
     { year: 2022, v: 5.86 }, { year: 2023, v: 5.32 }, { year: 2024, v: 4.91 },
+    { year: 2025, v: 4.85 },
   ],
   poverty: [
     { year: 2019, v: 9.22 }, { year: 2020, v: 10.19 }, { year: 2021, v: 9.71 },
     { year: 2022, v: 9.57 }, { year: 2023, v: 9.36 }, { year: 2024, v: 8.57 },
+    { year: 2025, v: 8.47 },
   ],
   exports: [
     { year: 2019, v: 167.5 }, { year: 2020, v: 163.2 }, { year: 2021, v: 231.6 },
@@ -48,6 +64,7 @@ export const series = {
   hdi: [
     { year: 2019, v: 71.92 }, { year: 2020, v: 71.94 }, { year: 2021, v: 72.29 },
     { year: 2022, v: 72.91 }, { year: 2023, v: 74.39 }, { year: 2024, v: 75.02 },
+    { year: 2025, v: 75.90 },
   ],
   gini: [
     { year: 2019, v: 0.380 }, { year: 2020, v: 0.381 }, { year: 2021, v: 0.381 },
@@ -78,81 +95,21 @@ export const sectors = [
   { name: 'Other services', share: 24.6 },
 ];
 
-// Provinces: 2020 Population Census (BPS), millions; area km2; HDI 2024 (BPS).
-// The four Papuan provinces created in 2022 (Central, Highland, South and
-// Southwest Papua) are shown with their 2020-census populations; Papua and
-// West Papua are shown as the remainder after those splits, so the 38 rows
-// sum to the census total of 270.20 million.
-export const provinces = [
-  { name: 'West Java', pop: 48.27, area: 35377, hdi: 73.65 },
-  { name: 'East Java', pop: 40.67, area: 47803, hdi: 74.34 },
-  { name: 'Central Java', pop: 36.52, area: 32801, hdi: 73.29 },
-  { name: 'North Sumatra', pop: 14.80, area: 72882, hdi: 75.76 },
-  { name: 'Banten', pop: 11.90, area: 9161, hdi: 74.84 },
-  { name: 'Jakarta', pop: 10.56, area: 664, hdi: 82.46 },
-  { name: 'South Sulawesi', pop: 9.07, area: 46717, hdi: 73.98 },
-  { name: 'Lampung', pop: 9.00, area: 34624, hdi: 70.96 },
-  { name: 'South Sumatra', pop: 8.47, area: 91592, hdi: 71.25 },
-  { name: 'Riau', pop: 6.39, area: 87024, hdi: 74.00 },
-  { name: 'West Sumatra', pop: 5.53, area: 42013, hdi: 74.38 },
-  { name: 'West Kalimantan', pop: 5.41, area: 147307, hdi: 70.72 },
-  { name: 'East Nusa Tenggara', pop: 5.33, area: 47418, hdi: 66.31 },
-  { name: 'West Nusa Tenggara', pop: 5.32, area: 18572, hdi: 70.94 },
-  { name: 'Aceh', pop: 5.27, area: 57957, hdi: 74.29 },
-  { name: 'Bali', pop: 4.32, area: 5780, hdi: 76.98 },
-  { name: 'Papua', pop: 1.05, area: 66171, hdi: 61.39 },
-  { name: 'South Kalimantan', pop: 4.07, area: 38744, hdi: 72.74 },
-  { name: 'East Kalimantan', pop: 3.77, area: 127267, hdi: 78.20 },
-  { name: 'Yogyakarta', pop: 3.67, area: 3133, hdi: 80.47 },
-  { name: 'Jambi', pop: 3.55, area: 50058, hdi: 73.38 },
-  { name: 'Central Sulawesi', pop: 2.99, area: 61841, hdi: 71.56 },
-  { name: 'Central Kalimantan', pop: 2.67, area: 153564, hdi: 72.55 },
-  { name: 'North Sulawesi', pop: 2.62, area: 13852, hdi: 74.84 },
-  { name: 'Southeast Sulawesi', pop: 2.62, area: 38068, hdi: 72.57 },
-  { name: 'Riau Islands', pop: 2.06, area: 8201, hdi: 79.70 },
-  { name: 'Bengkulu', pop: 2.01, area: 19986, hdi: 72.98 },
-  { name: 'Maluku', pop: 1.85, area: 46914, hdi: 70.91 },
-  { name: 'Bangka Belitung', pop: 1.46, area: 16424, hdi: 72.91 },
-  { name: 'West Sulawesi', pop: 1.42, area: 16787, hdi: 68.72 },
-  { name: 'Highland Papua', pop: 1.39, area: 51413, hdi: 57.54 },
-  { name: 'Central Papua', pop: 1.34, area: 61766, hdi: 63.25 },
-  { name: 'North Maluku', pop: 1.28, area: 31983, hdi: 70.94 },
-  { name: 'Gorontalo', pop: 1.17, area: 11257, hdi: 70.32 },
-  { name: 'West Papua', pop: 0.53, area: 64337, hdi: 65.76 },
-  { name: 'North Kalimantan', pop: 0.70, area: 70841, hdi: 72.85 },
-  { name: 'Southwest Papua', pop: 0.60, area: 39167, hdi: 65.10 },
-  { name: 'South Papua', pop: 0.51, area: 117849, hdi: 60.73 },
+// The overview's latest-releases strip: the newest headline readings.
+export const stripItems = [
+  { label: 'Growth 2025', value: '5.11%' },
+  { label: 'Inflation, Dec 2025', value: '2.92%' },
+  { label: 'Unemployment, Aug 2025', value: '4.85%' },
+  { label: 'Poverty, Mar 2025', value: '8.47%' },
+  { label: 'HDI 2025', value: '75.90' },
 ];
 
 // Latest releases: the most recent official releases behind this site's figures.
 export const releases = [
-  { date: 'Feb 2025', title: 'Economic Growth 2024', detail: 'GDP grew 5.03% in 2024; GDP Rp22,139 trillion at current prices (BPS).' },
-  { date: 'Jan 2025', title: 'Poverty Profile, September 2024', detail: 'Poverty rate 8.57%; 24.06 million people below the line (BPS).' },
-  { date: 'Jan 2025', title: 'Exports & Imports 2024', detail: 'Exports US$264.70bn, imports US$233.66bn; surplus US$31.04bn (BPS).' },
-  { date: 'Jan 2025', title: 'Consumer Price Index, December 2024', detail: 'Annual inflation 1.57% year-on-year, the lowest since 2021 (BPS).' },
-  { date: 'Nov 2024', title: 'Labour Force Situation, August 2024', detail: 'Open unemployment 4.91%; labour force 149.38 million (BPS).' },
-  { date: '2025', title: 'Human Development Index 2024', detail: 'HDI 75.02, up 0.63 points on 2023; Jakarta highest at 82.46 (BPS).' },
-];
-
-// People facts: one-line answers with source + year.
-export const peopleFacts = [
-  { label: 'Life expectancy at birth', value: '73.9 years', source: 'BPS, 2024' },
-  { label: 'Median age', value: '30.1 years', source: 'BPS, 2024' },
-  { label: 'Urban population', value: '58.6%', source: 'BPS / World Bank, 2024' },
-  { label: 'Adult literacy (15+)', value: '96.6%', source: 'BPS, 2024' },
-  { label: 'Internet users', value: '221.6 million', source: 'APJII, 2024' },
-  { label: 'Fertility rate', value: '2.14 children per woman', source: 'BPS, 2024' },
-  { label: 'Land area', value: '1,904,569 km²', source: 'BPS' },
-  { label: 'Islands', value: '17,508', source: 'BPS' },
-  { label: 'Provinces', value: '38', source: 'Ministry of Home Affairs, 2022' },
-  { label: 'Working-age population (15+)', value: '211.6 million', source: 'BPS, Aug 2024' },
-  { label: 'Labour force participation', value: '70.6%', source: 'BPS, Aug 2024' },
-  { label: 'Average monthly wage', value: 'Rp3.27 million', source: 'BPS, Aug 2024' },
-];
-
-export const sources = [
-  { abbr: 'BPS', name: 'Statistics Indonesia (Badan Pusat Statistik)', note: 'National statistical office. Census, surveys and price statistics quoted throughout this site.' },
-  { abbr: 'BI', name: 'Bank Indonesia', note: 'Monetary and balance-of-payments statistics; exchange-rate reference.' },
-  { abbr: 'World Bank', name: 'World Bank, World Development Indicators', note: 'GDP per capita and international comparisons, 2024 vintage.' },
-  { abbr: 'APJII', name: 'Indonesian Internet Service Providers Association', note: 'Internet penetration survey, 2024.' },
+  { date: 'Feb 2026', title: 'Economic Growth 2025', detail: 'GDP grew 5.11% in 2025, to Rp23,821 trillion at current prices; GDP per head reached Rp83.7 million (BPS).' },
+  { date: 'Jan 2026', title: 'Consumer Price Index, December 2025', detail: 'Inflation closed 2025 at 2.92% year-on-year, inside Bank Indonesia’s 2.5% ± 1% target band (BPS).' },
+  { date: 'Dec 2025', title: 'Human Development Index 2025', detail: 'HDI rose to 75.90, up 0.88 points on 2024; Jakarta still highest, Highland Papua lowest (BPS).' },
+  { date: 'Nov 2025', title: 'Labour Force Situation, August 2025', detail: 'Open unemployment 4.85%; labour force 154.9 million; average wage Rp3.33 million a month (BPS).' },
+  { date: 'Jul 2025', title: 'Poverty Profile, March 2025', detail: 'Poverty rate 8.47%; 23.85 million people below the line — the lowest reading on record (BPS).' },
+  { date: 'Jul 2025', title: 'Population, mid-2025', detail: 'Indonesia’s population reached 284.4 million at mid-2025, up 2.8 million in a year (BPS).' },
 ];

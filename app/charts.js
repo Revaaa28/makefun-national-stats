@@ -1,10 +1,10 @@
-// Hand-rolled SVG charts for AngkaNusa: line, bar and donut.
+// Hand-rolled SVG charts for AngkaNusa: line, bar and sparkline.
 // No library, no network — the site draws every chart from its own data.
+// (The donut and the age pyramid live with the pages that use them.)
 
 import { fmt } from './format.js';
 
 const INK = '#0f3d3e';
-const ACCENT = '#c77f1a';
 const TEAL = '#1f7a6d';
 const GRID = '#d8ddd8';
 const MUTED = '#5d6b63';
@@ -55,39 +55,36 @@ export function lineChart(points, { width = 640, height = 260, unit = '', decima
 }
 
 // Horizontal bar chart: rows {name, value}; returns an SVG string.
-export function barChart(rows, { width = 640, unit = '', decimals = 1, barColor = TEAL } = {}) {
-  const rowH = 34, padT = 6, labelW = 168;
+export function barChart(rows, { width = 640, unit = '', decimals = 1, barColor = TEAL, rowH = 34, labelW = 168 } = {}) {
+  const padT = 6;
   const height = padT + rows.length * rowH + 8;
   const max = Math.max(...rows.map((r) => r.value));
   const bars = rows.map((r, i) => {
     const y = padT + i * rowH;
     const bw = ((width - labelW - 74) * r.value) / max;
-    return `<text x="0" y="${y + 17}" font-size="12.5" fill="${INK}">${r.name}</text>
-      <rect x="${labelW}" y="${y + 4}" width="${bw.toFixed(1)}" height="18" rx="3" fill="${barColor}"/>
-      <text x="${labelW + bw + 8}" y="${y + 17}" font-size="12.5" font-weight="700" fill="${INK}">${fmt(r.value, decimals)}${unit}</text>`;
+    const midY = y + rowH / 2 + 4;
+    return `<text x="0" y="${midY}" font-size="12.5" fill="${INK}">${r.name}</text>
+      <rect x="${labelW}" y="${y + (rowH - 18) / 2}" width="${bw.toFixed(1)}" height="18" rx="3" fill="${barColor}"/>
+      <text x="${labelW + bw + 8}" y="${midY}" font-size="12.5" font-weight="700" fill="${INK}">${fmt(r.value, decimals)}${unit}</text>`;
   }).join('');
   return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Bar chart">${bars}</svg>`;
 }
 
-// Donut chart: slices {name, share}; returns SVG + legend HTML.
-export function donutChart(slices, { size = 220 } = {}) {
-  const palette = ['#0f3d3e', '#1f7a6d', '#c77f1a', '#e8a33d', '#7fa88f', '#4a6b7c', '#a34d2d', '#8fa8bf', '#6b7f5e'];
-  const r = size / 2 - 8, cx = size / 2, cy = size / 2;
-  let a0 = -Math.PI / 2;
-  const paths = slices.map((s, i) => {
-    const a1 = a0 + (s.share / 100) * Math.PI * 2;
-    const large = s.share > 50 ? 1 : 0;
-    const x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0);
-    const x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
-    const d = `M ${cx} ${cy} L ${x0.toFixed(1)} ${y0.toFixed(1)} A ${r} ${r} 0 ${large} 1 ${x1.toFixed(1)} ${y1.toFixed(1)} Z`;
-    a0 = a1;
-    return `<path d="${d}" fill="${palette[i % palette.length]}"/>`;
-  }).join('');
-  const hole = `<circle cx="${cx}" cy="${cy}" r="${(r * 0.58).toFixed(1)}" fill="#fff"/>`;
-  const legend = slices.map((s, i) =>
-    `<li><span class="sw" style="background:${palette[i % palette.length]}"></span>${s.name}<b>${fmt(s.share, 1)}%</b></li>`).join('');
-  return `<div class="donut-wrap"><svg viewBox="0 0 ${size} ${size}" role="img" aria-label="Donut chart of shares">${paths}${hole}
-    <text x="${cx}" y="${cy - 2}" font-size="15" font-weight="700" fill="${INK}" text-anchor="middle">GDP</text>
-    <text x="${cx}" y="${cy + 16}" font-size="11" fill="${MUTED}" text-anchor="middle">by sector, 2024</text></svg>
-    <ul class="legend">${legend}</ul></div>`;
+// Sparkline: a bare trend line for a KPI card — values only, no axes.
+// The line is normalised to the series' own range; the last point is
+// dotted so the eye lands on the latest value.
+export function sparkline(values, { width = 220, height = 26 } = {}) {
+  const min = Math.min(...values), max = Math.max(...values);
+  const span = max - min || 1;
+  const padY = 3;
+  const x = (i) => (i / (values.length - 1)) * (width - 6) + 3;
+  const y = (v) => padY + (1 - (v - min) / span) * (height - padY * 2);
+  const line = values.map((v, i) => `${i === 0 ? 'M' : 'L'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const area = `${line} L${x(values.length - 1).toFixed(1)},${height} L${x(0).toFixed(1)},${height} Z`;
+  const lx = x(values.length - 1), ly = y(values[values.length - 1]);
+  return `<svg class="spark" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" aria-hidden="true">
+    <path d="${area}" fill="${TEAL}" opacity="0.10"/>
+    <path d="${line}" fill="none" stroke="${TEAL}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="3" fill="${TEAL}"/>
+  </svg>`;
 }

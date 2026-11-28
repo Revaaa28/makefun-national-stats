@@ -1,5 +1,6 @@
-// AngkaNusa router: hash routes, page render, and the working controls
-// (chart range toggle, province search, sortable table).
+// AngkaNusa router: hash routes, lazy page loading, page render, and
+// the working controls (chart range toggle, province tile map, province
+// search, sortable table).
 
 import { routes } from './views.js';
 import { series } from './data.js';
@@ -13,9 +14,14 @@ function currentPath() {
   return routes[hash] ? hash : '/';
 }
 
-function render() {
+let renderSeq = 0;
+
+async function render() {
+  const seq = ++renderSeq;
   const path = currentPath();
-  app.innerHTML = routes[path]();
+  const mod = await routes[path]();
+  if (seq !== renderSeq) return; // a newer navigation already won
+  app.innerHTML = mod.default();
   navLinks.forEach((a) => {
     const href = a.getAttribute('href');
     if (href === `#${path}`) a.setAttribute('aria-current', 'page');
@@ -41,7 +47,7 @@ function wireGrowthToggle() {
       const pts = btn.dataset.range === 'recent'
         ? series.gdpGrowth.filter((p) => p.year >= 2020)
         : series.gdpGrowth;
-      box.innerHTML = lineChart(pts, { unit: '%' });
+      box.innerHTML = lineChart(pts, { unit: '%', height: 154 });
     });
   });
 }
@@ -63,6 +69,15 @@ function wireRegions() {
       if (hit) shown += 1;
     });
     count.textContent = `${shown} of 38 provinces shown.`;
+  });
+
+  // Tile map: clicking a province's tile filters the table to it.
+  document.querySelectorAll('.tile').forEach((tile) => {
+    tile.addEventListener('click', () => {
+      search.value = tile.dataset.province;
+      search.dispatchEvent(new Event('input'));
+      table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   });
 
   let sortKey = null;

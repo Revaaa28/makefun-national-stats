@@ -5,11 +5,15 @@
 [![reward](https://make.fun/badge/best-national-statistics-site-20261126-0539/Revaaa28/makefun-national-stats/reward.svg)](https://make.fun/bounty/best-national-statistics-site-20261126-0539?utm_source=github&utm_medium=readme&utm_campaign=best-national-statistics-site-20261126-0539)
 
 **AngkaNusa — Indonesia in numbers.** A national statistics site that runs
-offline in a browser, on desktop and phone, from its own static files: six
-linked sections (Overview, Population, Economy, Work & income, Regions,
-Sources), hand-drawn SVG charts, a searchable and sortable table of all 38
-provinces, and real figures — every one with its source and year — from BPS
-(Statistics Indonesia), Bank Indonesia, the World Bank and APJII.
+offline in a browser, on desktop and phone, from its own static files: seven
+linked sections (Overview, Population, Economy, Work & income, Health &
+education, Regions, Sources), hand-drawn SVG charts — including a census
+age pyramid and a tile-grid map of all 38 provinces coloured by HDI — a
+searchable and sortable province table, and real figures updated to the
+2025 releases, every one with its source and year, from BPS (Statistics
+Indonesia), Bank Indonesia, the World Bank, APJII, the Ministry of Health
+and BPJS Kesehatan. Pages load lazily, so the first load is the overview
+alone: seven small files, under 10 KB gzipped.
 
 ## Run it
 
